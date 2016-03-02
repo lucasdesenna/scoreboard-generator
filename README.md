@@ -1,4 +1,4 @@
-# functional-programming-challenge
+# scoreboard-generator
 
 FIXME: description
 
@@ -10,7 +10,7 @@ Download from http://example.com/FIXME.
 
 FIXME: explanation
 
-    $ java -jar functional-programming-challenge-0.1.0-standalone.jar [args]
+    $ java -jar scoreboard-generator-0.1.0-standalone.jar [args]
 
 ## Options
 
