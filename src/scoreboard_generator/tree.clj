@@ -2,9 +2,9 @@
   (:gen-class)
   (:require [scoreboard-generator.treeNode :as node]))
 
-(defrecord Tree [^clojure.lang.PersistentHashSet nodes])
+(defrecord Tree [nodes])
 
-(defn- tree-from-nodes-and-node-map
+(defn tree-from-nodes-and-node-map
   "doc-string"
   ([nodes node-map]
    
@@ -13,24 +13,26 @@
            node-id (:id node) 
            children-nodes-ids (:children-nodes-ids node)]
         
-       (concat 
+       (cons 
          (list  
            node-id  
            (tree-from-nodes-and-node-map (node/nodes-from-nodes-ids children-nodes-ids node-map) node-map)) 
          (tree-from-nodes-and-node-map (rest nodes) node-map))) 
      (list))))
 
-(defn tree-from-invitations 
-  "doc-string" 
-  [invitations]
+; (defn tree-from-root-and-node-map 
+;   "doc-string" 
+;   [node-map]
   
-  (let [node-map (node/parse-node-map-from-invitations invitations)
-        root-node (val (first node-map))]
+;   (let [root-node (val (first node-map))]
     
-  (tree-from-nodes-and-node-map (list root-node) node-map)))
+;   (tree-from-nodes-and-node-map (list root-node) node-map)))
 
-(defn subtree-from-tree-and-node-id 
+(defn branch-from-tree-and-node-id 
   "doc-string"
   [tree node-id]
   
-  )
+  (let [branches-and-nodes (tree-seq seq? identity tree)
+        branch-map (apply array-map (rest branches-and-nodes))
+        desired-branch (get branch-map node-id)]
+    desired-branch))

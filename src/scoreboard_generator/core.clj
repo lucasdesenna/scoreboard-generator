@@ -1,7 +1,7 @@
 (ns scoreboard-generator.core
   (:gen-class)
   (:require [scoreboard-generator.fileParser :as fileParser]
-            [scoreboard-generator.tree :as tree]))
+            [scoreboard-generator.forest :as forest]))
 
 
 (defn -main
@@ -9,7 +9,7 @@
   []
   (let [test-file "resources/test_input.txt"
         invitations (fileParser/parse-invitations-from-file test-file)
-        tree (tree/tree-from-invitations invitations)]
-  tree))
+        user-forest (forest/forest-from-invitations invitations)]
+  user-forest))
 
 (-main)

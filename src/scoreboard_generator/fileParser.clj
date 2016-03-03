@@ -1,7 +1,6 @@
 (ns scoreboard-generator.fileParser
   (:gen-class)
-  (:require scoreboard-generator.invitation)
-  (:refer scoreboard-generator.invitation))
+  (:require [scoreboard-generator.invitation :as inv]))
 
 (defn- extract-lines-from-file
   "Extracts all lines from the input file and returns them as a list of single line strings."
@@ -15,7 +14,7 @@
   "Parses all valid lines from the input collection into a list of invitations."
   [lines]
   (for [line lines 
-        :let [invite (invitation line)]
+        :let [invite (inv/invitation line)]
         :when invite] 
     invite))
 
