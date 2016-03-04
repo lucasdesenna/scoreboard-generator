@@ -2,37 +2,45 @@
   (:gen-class)
   (:require [scoreboard-generator.treeNode :as node]))
 
-(defrecord Tree [nodes])
-
-(defn tree-from-nodes-and-node-map
+(defn create-tree
   "doc-string"
-  ([nodes node-map]
-   
-   (if (first nodes)
-     (let [node (first nodes) 
-           node-id (:id node) 
-           children-nodes-ids (:children-nodes-ids node)]
-        
-       (cons 
-         (list  
-           node-id  
-           (tree-from-nodes-and-node-map (node/nodes-from-nodes-ids children-nodes-ids node-map) node-map)) 
-         (tree-from-nodes-and-node-map (rest nodes) node-map))) 
-     (list))))
-
-; (defn tree-from-root-and-node-map 
-;   "doc-string" 
-;   [node-map]
-  
-;   (let [root-node (val (first node-map))]
+  ([node-map node-list]
     
-;   (tree-from-nodes-and-node-map (list root-node) node-map)))
-
-(defn branch-from-tree-and-node-id 
-  "doc-string"
-  [tree node-id]
+    (if-let [validity (:validity (first node-list))]
+      (let [target-node (first node-list)
+            target-node-id (:id target-node) 
+            children-nodes-ids (:children-nodes-ids target-node)
+            validity (:validity target-node)]
+        (cons 
+          (list  
+            target-node-id  
+            (create-tree node-map (node/nodes-from-nodes-ids children-nodes-ids node-map))) 
+          (create-tree node-map (rest node-list)))) 
+      (list)))
   
-  (let [branches-and-nodes (tree-seq seq? identity tree)
-        branch-map (apply array-map (rest branches-and-nodes))
-        desired-branch (get branch-map node-id)]
-    desired-branch))
+  ([invitations]
+    
+   (let [node-map (node/parse-node-map-from-invitations invitations)
+         node-list (vals node-map)]
+     (create-tree node-map node-list))))
+
+(defn trim-leafs 
+  "doc-string"
+  ([branches remove-root?]
+   
+   (if-let [target-branch (first branches)]
+    (let [root-node-id (first target-branch)
+          target-children-branches (second target-branch)
+          leaf? (= (count target-children-branches) 0)]
+      (if (or 
+            (= leaf? false)
+            (= remove-root? false))
+        (cons
+          (list root-node-id (trim-leafs target-children-branches true))
+          (trim-leafs (rest branches) remove-root?))
+        (trim-leafs (rest branches) remove-root?)))
+    (list)))
+
+  ([tree]
+   
+   (trim-leafs (list tree) false)))

@@ -1,24 +1,18 @@
 (ns scoreboard-generator.forest
   (:gen-class)
-  (:require [scoreboard-generator.treeNode :as node]
-            [scoreboard-generator.tree :as tree]))
+  (:require [scoreboard-generator.tree :as tree]))
 
-(defn forest-from-invitations 
+(defn create-forest
   "doc-string" 
   [invitations]
   
-  (let [node-map (node/parse-node-map-from-invitations invitations)
-        node-list (vals node-map)
-        forest (tree/tree-from-nodes-and-node-map node-list node-map)]
+  (let [forest (tree/create-tree invitations)]
     
   forest))
 
-(defn ordered-forest-from-invitations 
-  "doc-string" 
-  [invitations]
+(defn trim-leafs 
+  "doc-string"
+  [forest]
   
-  (let [forest (forest-from-invitations invitations)
-        ordered-forest (zipmap (take (count forest) (iterate inc 1)) forest)]
-    
-  ordered-forest))
-
+  (let [trimmed-forest (tree/trim-leafs forest false)]
+    trimmed-forest))
