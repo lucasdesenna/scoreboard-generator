@@ -14,11 +14,11 @@
   "Parses all valid lines from the input collection into a list of invitations."
   [lines]
   (for [line lines 
-        :let [invite (inv/invitation line)]
+        :let [invite (inv/create-invitation line)]
         :when invite] 
     invite))
 
-(defn parse-invitations-from-file 
+(defn parse-file 
   "Parses the file designated by the path into a list of invitations."
   [file-path]
   (let [lines (extract-lines-from-file file-path) 

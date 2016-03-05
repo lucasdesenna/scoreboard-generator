@@ -9,7 +9,7 @@
   [^String line]
   (map #(Integer. %) (string/split line #"\s")))
 
-(defn invitation 
+(defn create-invitation 
   ([^Integer inviter ^Integer invitee]
    
     (->Invitation inviter invitee))
@@ -18,6 +18,6 @@
     (let [inviter-and-invitee (extract-inviter-and-invitee line)]
       
       (if (= (count inviter-and-invitee) 2) 
-        (->Invitation (first inviter-and-invitee) (second inviter-and-invitee))
+        (create-invitation (first inviter-and-invitee) (second inviter-and-invitee))
         (throw (IllegalArgumentException. (str "The line '" line "' does not describe an invitation")))))))
 
