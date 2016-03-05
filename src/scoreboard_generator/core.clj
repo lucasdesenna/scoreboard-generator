@@ -14,4 +14,4 @@
         proto-node-map (inv-parser/parse-invitations invitations)
         customer-map (node-map-generator/create-node-map proto-node-map)
         scoreboard (scoreboard/get-scoreboard customer-map)]
-  (print scoreboard)))
+    (print scoreboard)))
