@@ -1,5 +1,6 @@
-(ns scoreboard-generator.scoreboard
-  (:gen-class))
+(ns scoreboard-generator.scoreboard-factory
+  (:gen-class)
+  (:use [flatland.ordered.map]))
 
 (defn- exp [x n]
   (reduce * (repeat n x)))
@@ -26,12 +27,27 @@
         (doall (mapcat #(:children (get node-map %)) current-node-children)))
       score)))
     
-(defn get-scoreboard 
+(defn- create-score-map 
   "doc-string"
   [customer-map]
   
-  (into
+  (into 
     (sorted-map)
     (for [customer customer-map
           :let [customer-id (key customer)]]
       [customer-id (get-score customer-map customer-id)])))
+
+(defn- sort-score-map 
+  "doc-string"
+  [scoreboard]
+  (into
+    (ordered-map)
+    (sort-by val > scoreboard)))
+  
+(defn create-scoreboard 
+  "doc-string"
+  [customer-map]
+  
+  (let [scoreboard (create-score-map customer-map)
+        sorted-scoreboard (sort-score-map scoreboard)]
+    sorted-scoreboard))
