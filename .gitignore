@@ -1,13 +1,3 @@
-/target
-/classes
-/checkouts
-pom.xml
-pom.xml.asc
-*.jar
-*.class
-/.lein-*
-/.nrepl-port
-.hgignore
-.hg/
-warn.txt
-invitations.txt
+/*
+!target
+target/uberjar
