@@ -23,7 +23,7 @@
   "Warns that a line was ignored and explains why it was so. Returns nil."
   [line line-number]
   
-  (let [warning (format "Warning: Line #%d '%s' was deemed invalid and was ignored." line-number line)]
+  (let [warning (format "Warning: Line #%d '%s' was deemed invalid and was ignored.\n" line-number line)]
     (println warning)
     nil))
 

@@ -30,7 +30,7 @@
   []
   
   (let [ extFilter (FileNameExtensionFilter. "Text File" (into-array  ["txt"]))
-        filechooser (JFileChooser. "./resources")
+        filechooser (JFileChooser. "./sample inputs")
         dummy (.setFileFilter filechooser extFilter)
         retval (.showOpenDialog filechooser nil) ]
     (if (= retval JFileChooser/APPROVE_OPTION)
@@ -42,7 +42,7 @@
   "Prompts user to choose an input file with the help of a file picker."
   []
   
-  (println "Choose a file containing an invitation list. (.txt)\n")
+  (println "Choose a file (.txt) containing an invitation list.\n")
   (let [intput-file (use-file-picker)]
     (if intput-file
       (str intput-file)
@@ -57,7 +57,7 @@
     
     (if invitations
         invitations
-        (repeat-action "This file contains no valid invitation. Please choose another file." wait-invitations))))
+        (repeat-action "This file contains no valid invitation. Please choose another file.\n" wait-invitations))))
 
 (defn- format-scoreboard-as-table
   "Formats a given scoreboard as a table."
