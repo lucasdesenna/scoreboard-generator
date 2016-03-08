@@ -1,33 +1,22 @@
 # scoreboard-generator
 
-The programm takes a properly formatted invitation list, parses it into a customer scoreboard and uploads it as a JSON object to the specified URI. The user is then given the option to pick a new file for conversion and submission or end the program.
+This program parses a properly formatted invitation list into a customer scoreboard. The user is then given the option to add new invitations to the scoreboard or upload it as a JSON string.
+  
+!IMPORTANT!: Invitation lists must be text files containing a single '$inviter-id $invitee-id' pair per line. Ids must be integers.
 
 ## Installation
 
-Download from http://example.com/FIXME.
+Download [Java 1.6 or greater] (http://java.sun.com/javase/downloads/index.jsp).
+
+Download [Scoreboard Generator latest version](http://lucasdesenna.github.io/viral-campaign-scoreboard/download/scoreboard-generator-0.1.0-standalone.zip).
 
 ## Usage
 
-FIXME: explanation
-
-    $ java -jar scoreboard-generator-0.1.0-standalone.jar [args]
-
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+  $ java -jar scoreboard-generator-0.1.0-standalone.jar
 
 ## License
 
-Copyright © 2016 FIXME
+Copyright © 2016 Lucas de Senna Correia
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
