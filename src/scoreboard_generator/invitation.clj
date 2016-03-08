@@ -1,13 +1,11 @@
-(ns scoreboard-generator.invitation
-  (:gen-class)
-  (:require [clojure.string :as string]))
+(ns scoreboard-generator.invitation)
 
 (defrecord Invitation [^Integer inviter ^Integer invitee])
 
 (defn- extract-inviter-and-invitee
   "Extracts inviter and invitee pair from a single line string."
   [^String line]
-  (map #(Integer. %) (string/split line #"\s")))
+  (map #(Integer. %) (re-seq #"\d+" line)))
 
 (defn create-invitation 
   ([^Integer inviter ^Integer invitee]

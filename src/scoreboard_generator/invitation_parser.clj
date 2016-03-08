@@ -1,5 +1,4 @@
-(ns scoreboard-generator.invitation-parser
-  (:gen-class))
+(ns scoreboard-generator.invitation-parser)
 
 (defn- validate 
   "doc-string"

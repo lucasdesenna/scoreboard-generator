@@ -1,5 +1,4 @@
-(ns scoreboard-generator.node-map-factory
-  (:gen-class))
+(ns scoreboard-generator.node-map-factory)
 
 (defrecord Node [^Integer id ^Integer parent ^clojure.lang.PersistentList children])
 

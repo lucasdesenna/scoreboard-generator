@@ -1,6 +1,5 @@
-(ns scoreboard-generator.scoreboard-factory
-  (:gen-class)
-  (:use [flatland.ordered.map]))
+(ns scoreboard-generator.scoreboard-factory  
+  (:require [flatland.ordered.map :as fl]))
 
 (defn- exp [x n]
   (reduce * (repeat n x)))
@@ -41,7 +40,7 @@
   "doc-string"
   [scoreboard]
   (into
-    (ordered-map)
+    (fl/ordered-map)
     (sort-by val > scoreboard)))
   
 (defn create-scoreboard 

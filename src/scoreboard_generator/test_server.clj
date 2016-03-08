@@ -1,10 +1,8 @@
 (ns scoreboard-generator.test-server
-  (:gen-class)
-  (:require [cheshire.core :refer :all])
+  (:require [org.httpkit.server :refer [run-server with-channel on-close send!]])
   (:use [compojure.route :only [files not-found]]
         [compojure.handler :only [site]]
-        [compojure.core :only [defroutes GET POST DELETE ANY context]]
-        org.httpkit.server))
+        [compojure.core :only [defroutes GET POST DELETE ANY context]]))
 
 (defonce test-server (atom {}))
 
@@ -15,7 +13,7 @@
   (let [echo (-> request :body)]
     
     (with-channel request channel
-        (println "Test Server channel Open.\n")
+        (println "Test Server channel open.\n")
         (on-close channel (fn [status]
                             (println "Test Server channel closed.\n")))
         
