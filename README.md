@@ -1,6 +1,6 @@
 # scoreboard-generator
 
-FIXME: description
+The programm takes a properly formatted invitation list, parses it into a customer scoreboard and uploads it as a JSON object to the specified URI. The user is then given the option to pick a new file for conversion and submission or end the program.
 
 ## Installation
 
@@ -20,9 +20,6 @@ FIXME: listing of options this app accepts.
 
 ...
 
-### Bugs
-
-...
 
 ### Any Other Sections
 ### That You Think
