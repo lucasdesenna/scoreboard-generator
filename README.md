@@ -2,7 +2,9 @@
 
 This program parses a properly formatted invitation list into a customer scoreboard. The user is then given the option to add new invitations to the scoreboard or upload it as a JSON string.
   
-!IMPORTANT!: Invitation lists must be text files containing a single '$inviter-id $invitee-id' pair per line. Ids must be integers.
+#### Important
+
+Invitation lists must be text files containing a single '$inviter-id $invitee-id' pair per line. IDs must be integers.
 
 ## Installation
 
