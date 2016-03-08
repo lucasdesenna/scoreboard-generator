@@ -1,7 +1,7 @@
 (ns scoreboard-generator.invitation-parser)
 
 (defn- validate 
-  "doc-string"
+  "Makrs a proto-node as being valid based on a given invitation. A proto-node is marked as valid if it has invited at least one other proto-node."
   [invitation]
   
   (let [proto-node (:inviter invitation)]
@@ -9,38 +9,38 @@
     [proto-node {:valid? true}]))
 
 (defn- map-validity 
-  "doc-string"
+  "Maps the validity of all proto-nodes in given invitation list."
   [invitations]
   
   (into
     (sorted-map)
     (map validate invitations)))
 
-(defn- get-first-born 
-  "doc-string"
+(defn- get-firstborn 
+  "Returns the first proto-node described by a given invitation list."
   [invitations]
   
   (:inviter (first invitations)))
 
-(defn- remove-invitations-to-first-born 
-  "doc-string"
+(defn- remove-invitations-to-firstborn 
+  "Removes all invitations to the firstborn proto-node in a fiven invitation list."
   [invitations]
   
-  (let [first-born (get-first-born invitations)]
-    (remove #(= (:invitee %) first-born) invitations)))
+  (let [firstborn (get-firstborn invitations)]
+    (remove #(= (:invitee %) firstborn) invitations)))
 
 (defn- conflicts?
-  "doc-string"
-  [claimer contender]
+  "Returns true if both invitations are distinct but have the same envitee. Otherwise returns false."
+  [invitation1 invitation2]
   
   (if (and 
-        (= (:invitee claimer) (:invitee contender))
-        (not= (:inviter claimer) (:inviter contender)))
+        (= (:invitee invitation1) (:invitee invitation2))
+        (not= (:inviter invitation1) (:inviter invitation2)))
     true
     false))
 
 (defn- remove-conflicting-invitations 
-  "doc-string"
+  "Removes all invitations to already invited nodes in a given invitation list."
   [invitations]
   
   (if-let [claimer (first invitations)]
@@ -51,23 +51,23 @@
     (list)))
 
 (defn- remove-invitations-to-invalid-proto-nodes 
-  "doc-string"
+  "Removes all invitations to invalid proto-nodes in a given invitation list)"
   [conflict-free-invitations validity-map]
   
   (filter #(contains? validity-map (:invitee %)) conflict-free-invitations))
 
 (defn- filter-relevant-invitations 
-  "doc-string"
+  "Returns a list of invitations free of conflicts and invitations invalid proto-nodes from a given invitation list."
   [invitations]
   
   (let [validity-map (map-validity invitations)
-        loop-free-invitations (remove-invitations-to-first-born invitations)
+        loop-free-invitations (remove-invitations-to-firstborn invitations)
         conflict-free-invitations (remove-conflicting-invitations loop-free-invitations)
         relevant-invitations (remove-invitations-to-invalid-proto-nodes conflict-free-invitations validity-map)]
   relevant-invitations))
 
 (defn- get-parent 
-  "doc-string"
+  "Returns a vector containing the proto-node->parent pair described by the given invitation."
   [invitation]
   
   (let [proto-node (:invitee invitation)
@@ -76,16 +76,16 @@
       [proto-node {:parent parent}]))
 
 (defn- map-parents 
-  "doc-string"
+  "Returns a map containing all proto-node->parent pairs described by a given invitation list."
   [conflict-free-invitations]
   
-  (let [first-born (get-first-born conflict-free-invitations)]
+  (let [firstborn (get-firstborn conflict-free-invitations)]
     (into
       (sorted-map)
       (map get-parent conflict-free-invitations))))
 
 (defn- get-child 
-  "doc-string"
+  "Returns a vector containing the proto-node->child pair described by the given invitation"
   [invitation]
   
   (let [proto-node (:inviter invitation)
@@ -94,7 +94,7 @@
       [proto-node child]))
 
 (defn- map-children 
-  "doc-string"
+  "Returns a map containing all proto-node->children pairs described by a given invitation list."
   [conflict-free-invitations]
   
   (let [children-by-proto-node (group-by #(first %) (map get-child conflict-free-invitations))]
@@ -105,13 +105,13 @@
         [proto-node {:children (mapcat (fn [x] (list (second x))) (val group))}]))))
 
 (defn- merge-maps 
-  "doc-string"
-  [parent-map children-map]
+  "Returns a single merged map from two given maps of maps. Entries with the same key are combined."
+  [map1 map2]
   
-  (merge-with merge parent-map children-map))
+  (merge-with merge map1 map2))
 
 (defn parse-invitations 
-  "doc-string"
+  "Returns a map of all proto-nodes, their corresponding parents and children, described by a given invitation list."
   [invitations]
   
   (let [relevant-invitations (filter-relevant-invitations invitations)

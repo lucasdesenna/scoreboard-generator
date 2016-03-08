@@ -7,7 +7,7 @@
 (defonce test-server (atom {}))
 
 (defn json-handler 
-  "doc-string"
+  "Handles requests sent to the 'json' service. Echoes the body of the message received back to the sender."
   [request]
   
   (let [echo (-> request :body)]
@@ -25,17 +25,17 @@
 
 
 (defn show-landing-page 
-  "doc-string"
+  "Renders a landing page."
   [request] 
   
-  "<h1>Test Server is running...<h1>")
+  "<h1 style='font-family: Arial;'>Test Server is running...<h1>")
 
 (defroutes all-routes
   (GET "/" [] show-landing-page)
   (GET "/json" [] json-handler))
 
 (defn die-if-running
-  "doc-string"
+  "Kills the test server if it is running."
   []
   
   (when-not (nil? @test-server)
@@ -43,7 +43,7 @@
     (reset! test-server nil)))
 
 (defn run 
-  "doc-string"
+  "Runs test server."
   []
   
   (die-if-running)  

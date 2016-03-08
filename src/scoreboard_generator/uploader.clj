@@ -4,13 +4,13 @@
             [cheshire.core :refer :all]))
 
 (defn- print-echo 
-  "doc-string"
+  "Prints a given echo."
   [echo]
   (println "Echo received from server: \n")
   (println  echo "\n"))
 
 (defn- upload-successful 
-  "doc-string"
+  "Returns true, prints a warning and prints an echo of the body of the message received, if provided."
   [body]
   
   (println "Upload successful.\n")
@@ -18,37 +18,40 @@
   true)
 
 (defn upload-failed 
-  "doc-string"
+  "Returns false and prints a warning."
   [error]
   
   (println "Upload failed because of " error "\n")
   false)
 
 (defn generate-report 
-  "doc-string"
-  [body error]
+  "Returns true or false and prints warnings based on the provided response"
+  [response]
   
-  (if (not error)
-    (upload-successful body)
-    (upload-failed error)))
+  (let [body (:body response)
+        error (:error response)]
+    
+    (if (not error)
+      (upload-successful body)
+      (upload-failed error))))
 
 (defn upload 
-  "doc-string"
-  [upload-uri scoreboard]
+  "Uploads a given scoreboard to a given URI. Returns a report based on the bounce-back received."
+  [scoreboard target-uri]
   
-  (println "\nConnecting to" upload-uri "\n")
+  (println "\nConnecting to" target-uri "\n")
   (let [options {:header {"Content-Type" "application/json; charset=utf-8"}
                  :body (encode scoreboard)
                  :as :text}
-      {:keys [status body error]} @(http/get upload-uri options)]
+      response @(http/get target-uri options)]
     
-    (generate-report body error)))
+    (generate-report response)))
 
 (defn upload-test 
-  "doc-string"
+  "Uploads a given scoreboard to a local test server. Returns a report based on the bounce-back received."
   [scoreboard]
   
   (test-server/run)
-  (let [upload-successful? (upload "http://127.0.0.1:8090/json" scoreboard)]
+  (let [upload-successful? (upload scoreboard "http://127.0.0.1:8090/json")]
     (test-server/die-if-running)
     upload-successful?))

@@ -3,7 +3,7 @@
 (defrecord Node [^Integer id ^Integer parent ^clojure.lang.PersistentList children])
 
 (defn- create-node 
-  "doc-string"
+  "Returns a Node record from either a series of parameters or a proto-node."
   
   ([^Integer id ^Integer parent ^clojure.lang.PersistentList children] 
    
@@ -18,8 +18,9 @@
      [id (create-node id parent children)])))
 
 (defn create-node-map 
-  "doc-string"
+  "Returns a node-map from a proto-node-map."
   [proto-node-map]
+  
   (into
     (sorted-map)  
     (map create-node proto-node-map)))

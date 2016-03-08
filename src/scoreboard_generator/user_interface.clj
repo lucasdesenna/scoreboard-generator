@@ -96,10 +96,10 @@
 
 (defn- upload-scoreboard 
   "Tries to upload the provided scoreboard to the target URI. If no URI is provided, the scoreboard is uploaded to a local test server."
-  [target-uri scoreboard]
+  [scoreboard target-uri]
     
     (if (not= target-uri "") 
-      (uploader/upload target-uri scoreboard) 
+      (uploader/upload scoreboard target-uri) 
       (uploader/upload-test scoreboard)))
 
 (defn try-upload 
@@ -107,7 +107,7 @@
   [scoreboard]
   
   (let [target-uri (ask-for-target-uri)
-        upload-successful? (upload-scoreboard target-uri scoreboard)
+        upload-successful? (upload-scoreboard scoreboard target-uri)
         success-message "Upload complete.\n"
         fail-message "Please check your internet connection or try another URI.\n"]
     
@@ -156,7 +156,7 @@
   
   (concat current-invitations new-invitations))
 
-(defn add-invitations 
+(defn add-invitations-to 
   "Requests a csv string, parses it into new invitations and returns the provided invitations concatenated with the new ones."
   [invitations]
   
