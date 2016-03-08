@@ -1,4 +1,4 @@
-# scoreboard-generator
+# Scoreboard Generator
 
 This program parses a properly formatted invitation list into a customer scoreboard. The user is then given the option to add new invitations to the scoreboard or upload it as a JSON string.
   
