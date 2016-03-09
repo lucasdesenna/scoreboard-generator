@@ -1,27 +1,27 @@
 (ns scoreboard-generator.test-server
-  (:require [org.httpkit.server :refer [run-server with-channel on-close send!]])
-  (:use [compojure.route :only [files not-found]]
-        [compojure.handler :only [site]]
-        [compojure.core :only [defroutes GET POST DELETE ANY context]]))
+  (:require [org.httpkit.server :refer [run-server with-channel on-close send!]]
+            [compojure.route :refer [files not-found]]
+            [compojure.handler :refer [site]]
+            [compojure.core :refer [defroutes GET POST DELETE ANY context]]))
 
 (defonce test-server (atom {}))
 
 (defn json-handler 
-  "Handles requests sent to the 'json' service. Echoes the body of the message received back to the sender."
+  "Handles requests sent to the 'json' service. Echoes the body of the message 
+  received back to the sender."
   [request]
   
   (let [echo (-> request :body)]
     
-    (with-channel request channel
-        (println "Test Server channel open.\n")
-        (on-close channel (fn [status]
-                            (println "Test Server channel closed.\n")))
-        
-        (println "Data received.\n")
-        
-        (send! channel {:status 200
-                        :headers {"Content-Type" "text/plain"}
-                        :body echo}))))
+    (with-channel request 
+                  channel
+      (println "Test Server channel open.\n")
+      (on-close channel (fn [status] 
+                          (println "Test Server channel closed.\n")))
+      (println "Data received.\n")
+      (send! channel {:status 200
+                      :headers {"Content-Type" "text/plain"}
+                      :body echo}))))
 
 
 (defn show-landing-page 
@@ -47,4 +47,5 @@
   []
   
   (die-if-running)  
-  (reset! test-server (run-server #'all-routes {:port 8090})))
+  (reset! test-server 
+          (run-server #'all-routes {:port 8090})))
