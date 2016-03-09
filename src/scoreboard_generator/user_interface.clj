@@ -1,5 +1,5 @@
 (ns scoreboard-generator.user-interface
-  (:require [scoreboard-generator.file-parser :as file-parser]
+  (:require [scoreboard-generator.input-parser :as input-parser]
             [scoreboard-generator.uploader :as uploader]
             [clojure.pprint :as pprint]))
 
@@ -53,7 +53,7 @@
   []
   
   (let [file (ask-for-file)
-       invitations (file-parser/parse-file file)]
+       invitations (input-parser/parse-file file)]
     
     (if invitations
         invitations
@@ -146,7 +146,7 @@
   "Prompts the user to provide a csv string to be parsed into new invitations."
   []
   
-  (println "Specify new invitation(s).\n(Format: '$id1 $id2; $id3 $id4;...' Obs.: Ids can only be integers.)\nExample: '1 2; 2 3; 2 4;'\n")
+  (println "\nSpecify new invitation(s).\n(Format: '$ID1 $ID2; $ID3 $ID4;...' Obs.: IDs can only be integers.)\nExample: '1 2; 2 3; 2 4;'\n")
   
   (prompt-read ">>"))
 
@@ -163,8 +163,8 @@
   (let [csv (ask-for-invitations)]
     
     (if (not-empty csv)
-      (let [new-invitations (file-parser/parse-csv csv)
-            updated-invitations (file-parser/concat-invitations invitations new-invitations)]
+      (let [new-invitations (input-parser/parse-csv csv)
+            updated-invitations (merge-invitations invitations new-invitations)]
         updated-invitations)
       invitations)))
 

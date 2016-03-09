@@ -16,18 +16,32 @@
     (sorted-map)
     (map validate invitations)))
 
-(defn- get-firstborn 
-  "Returns the first proto-node described by a given invitation list."
+(defn- remove-duplicated-invitations 
+  "Returns a new invitation list, free of all duplicated invitations."
   [invitations]
   
-  (:inviter (first invitations)))
+  (distinct invitations))
 
-(defn- remove-invitations-to-firstborn 
-  "Removes all invitations to the firstborn proto-node in a fiven invitation list."
+(defn- creates-cycle?
+  "Returns true if the inviter and invitee of invitation1 are the same or if invitation2 has the inviter of invitation 1 as it's invitee. Otherwise returns false."
+  [invitation1 invitation2]
+  
+  (if (or
+        ; (= (:inviter invitation1) (:invitee invitation1))
+        (= (:inviter invitation1) (:invitee invitation2)))
+    true
+    false))
+
+(defn- remove-cyclic-invitations 
+  "Removes all invitations that would create a cycle."
   [invitations]
   
-  (let [firstborn (get-firstborn invitations)]
-    (remove #(= (:invitee %) firstborn) invitations)))
+  (if-let [invitation (first invitations)]
+    (let [cycle-free-invitations (remove #(creates-cycle? invitation %) invitations)]
+      (cons 
+        invitation
+        (remove-cyclic-invitations (rest cycle-free-invitations))))
+    (list)))
 
 (defn- conflicts?
   "Returns true if both invitations are distinct but have the same envitee. Otherwise returns false."
@@ -38,12 +52,6 @@
         (not= (:inviter invitation1) (:inviter invitation2)))
     true
     false))
-
-(defn remove-duplicated-invitations 
-  "Returns a new invitation list, free of all duplicated invitations."
-  [invitations]
-  
-  (distinct invitations))
 
 (defn- remove-conflicting-invitations 
   "Returns a new invitation list, free of all invitations to previously invited nodes."
@@ -58,17 +66,17 @@
 
 (defn- remove-invitations-to-invalid-proto-nodes 
   "Returns a new invitation list, free of all invitations to invalid proto-nodes)"
-  [conflict-free-invitations validity-map]
+  [invitations validity-map]
   
-  (filter #(contains? validity-map (:invitee %)) conflict-free-invitations))
+  (filter #(contains? validity-map (:invitee %)) invitations))
 
 (defn- filter-relevant-invitations 
-  "Returns a new invitation list, free of duplicates, conflicts and invitations to invalid proto-nodes."
+  "Returns a new invitation list, free of duplicates, cycles, conflicts and invitations to invalid proto-nodes."
   [invitations]
   
   (let [validity-map (map-validity invitations)
         duplicate-free-invitations (remove-duplicated-invitations invitations)
-        loop-free-invitations (remove-invitations-to-firstborn duplicate-free-invitations)
+        loop-free-invitations (remove-cyclic-invitations duplicate-free-invitations)
         conflict-free-invitations (remove-conflicting-invitations loop-free-invitations)
         relevant-invitations (remove-invitations-to-invalid-proto-nodes conflict-free-invitations validity-map)]
   relevant-invitations))
@@ -84,12 +92,11 @@
 
 (defn- map-parents 
   "Returns a map containing all proto-node->parent pairs described by a given invitation list."
-  [conflict-free-invitations]
+  [invitations]
   
-  (let [firstborn (get-firstborn conflict-free-invitations)]
-    (into
-      (sorted-map)
-      (map get-parent conflict-free-invitations))))
+  (into
+    (sorted-map)
+    (map get-parent invitations)))
 
 (defn- get-child 
   "Returns a vector containing the proto-node->child pair described by the given invitation"

@@ -1,4 +1,4 @@
-(ns scoreboard-generator.file-parser
+(ns scoreboard-generator.input-parser
   (:require [scoreboard-generator.invitation :as inv]
             [clojure.string :as string]))
 
@@ -12,18 +12,21 @@
       lines))
 
 (defn- line-valid? 
-  "Returns true if line is properly formatted and false if it isn't."
+  "Returns true if line contains two integers and is not a self-invitation. Returns false otherwise."
   [line]
   
-  (if (= (count (re-seq #"\d+" line)) 2)
-    true
-    false))
+  (let [integers (re-seq #"\d+" line)]
+    (if (and 
+          (= (count integers) 2)
+          (not= (first integers) (second integers)))
+      true
+      false)))
 
 (defn- ignore-line 
   "Warns that a line was ignored and explains why it was so. Returns nil."
   [line line-number]
   
-  (let [warning (format "Warning: Line #%d '%s' was deemed invalid and was ignored.\n" line-number line)]
+  (let [warning (format "\nWarning: Line #%d '%s' was deemed invalid and was ignored." line-number line)]
     (println warning)
     nil))
 
