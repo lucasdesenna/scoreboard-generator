@@ -39,8 +39,14 @@
     true
     false))
 
+(defn remove-duplicated-invitations 
+  "Returns a new invitation list, free of all duplicated invitations."
+  [invitations]
+  
+  (distinct invitations))
+
 (defn- remove-conflicting-invitations 
-  "Removes all invitations to already invited nodes in a given invitation list."
+  "Returns a new invitation list, free of all invitations to previously invited nodes."
   [invitations]
   
   (if-let [claimer (first invitations)]
@@ -51,17 +57,18 @@
     (list)))
 
 (defn- remove-invitations-to-invalid-proto-nodes 
-  "Removes all invitations to invalid proto-nodes in a given invitation list)"
+  "Returns a new invitation list, free of all invitations to invalid proto-nodes)"
   [conflict-free-invitations validity-map]
   
   (filter #(contains? validity-map (:invitee %)) conflict-free-invitations))
 
 (defn- filter-relevant-invitations 
-  "Returns a list of invitations free of conflicts and invitations invalid proto-nodes from a given invitation list."
+  "Returns a new invitation list, free of duplicates, conflicts and invitations to invalid proto-nodes."
   [invitations]
   
   (let [validity-map (map-validity invitations)
-        loop-free-invitations (remove-invitations-to-firstborn invitations)
+        duplicate-free-invitations (remove-duplicated-invitations invitations)
+        loop-free-invitations (remove-invitations-to-firstborn duplicate-free-invitations)
         conflict-free-invitations (remove-conflicting-invitations loop-free-invitations)
         relevant-invitations (remove-invitations-to-invalid-proto-nodes conflict-free-invitations validity-map)]
   relevant-invitations))
