@@ -23,11 +23,10 @@
   (distinct invitations))
 
 (defn- creates-cycle?
-  "Returns true if the inviter and invitee of invitation1 are the same or if invitation2 has the inviter of invitation 1 as it's invitee. Otherwise returns false."
+  "Returns true if invitation2 has the inviter of invitation 1 as it's invitee. Otherwise returns false."
   [invitation1 invitation2]
   
   (if (or
-        ; (= (:inviter invitation1) (:invitee invitation1))
         (= (:inviter invitation1) (:invitee invitation2)))
     true
     false))

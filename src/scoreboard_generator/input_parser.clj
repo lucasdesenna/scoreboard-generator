@@ -1,13 +1,13 @@
 (ns scoreboard-generator.input-parser
   (:require [scoreboard-generator.invitation :as inv]
+            [clojure.java.io :as io]
             [clojure.string :as string]))
 
-(defn- extract-lines
+(defn extract-lines
   "Extracts all lines from file and returns them as a list of single line strings."
   [file]
-    
-    (let [reader clojure.java.io/reader 
-          stream (reader file) 
+        
+    (let [stream (io/reader file)
           lines (with-open [line-sequence stream] (doall (line-seq line-sequence)))]
       lines))
 
@@ -67,29 +67,15 @@
   (let [lines (extract-lines file)
         valid-lines (remove-invalid-lines lines)]
     
-    (if (not-empty valid-lines)
-      (parse-lines valid-lines)
-      nil)))
+    (when (not-empty valid-lines)
+      (parse-lines valid-lines))))
 
-(defn- extract-lines-from-csv 
-  "Extracts all lines from a csv string and returns them as a list of strings."
-  [csv]
+(defn parse-inviter-invitee 
+  "Parses a inviter-invitee pair into a valid invitation."
+  [inviter invitee]
   
-  (string/split csv #";\s?"))
-
-(defn parse-csv 
-  "Parses a csv string into a list of invitations. Returns nil if no valid invitations are found"
-  [csv]
-  
-  (let [lines (extract-lines-from-csv csv)
-        valid-lines (remove-invalid-lines lines)]
+  (let [line (str inviter " " invitee)
+        valid-line (validate-line line 1)]
     
-    (if (not-empty valid-lines)
-      (parse-lines valid-lines)
-      nil)))
-
-(defn concat-invitations 
-  "Concatenates two invitation lists."
-  [invitation-list1 invitation-list2]
-  
-  (concat invitation-list1 invitation-list2))
+    (when valid-line
+      (parse-lines (list valid-line)))))

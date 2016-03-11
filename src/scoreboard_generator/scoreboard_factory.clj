@@ -1,8 +1,9 @@
 (ns scoreboard-generator.scoreboard-factory  
   (:require [flatland.ordered.map :as fl]))
 
-(defn- exp [x n]
+(defn- exp 
   "Returns x to the power of n"
+  [x n]
   (reduce * (repeat n x)))
 
 (defn- calculate-points 
