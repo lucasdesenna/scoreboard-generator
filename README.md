@@ -12,9 +12,9 @@ Some sample input files are provided along with the standalone version. They can
 
 ## Installation
 
-Download [Java 1.6 or greater] (http://java.sun.com/javase/downloads/index.jsp).
+[Download Java 1.6 or greater] (http://java.sun.com/javase/downloads/index.jsp).
 
-Download [Scoreboard Generator latest version](http://lucasdesenna.github.io/scoreboard-generator/download/scoreboard-generator-0.1.0-standalone.zip).
+[Download Scoreboard Generator latest version](http://lucasdesenna.github.io/scoreboard-generator/download/scoreboard-generator-0.1.0-standalone.zip).
 
 ## Usage
 ```
