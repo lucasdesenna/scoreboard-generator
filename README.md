@@ -1,6 +1,6 @@
 # Scoreboard Generator
 
-This program parses a properly formatted invitation list into a customer scoreboard. The user is then given the option to add new invitations to the scoreboard or upload it as a JSON string.
+Parses a properly formatted invitation list file (.txt) into a customer scoreboard and exposes it through a HTTP ndpoit. Another HTTP endpoint allows for the addition of new invitations to a loaded list.
   
 #### Important
 
@@ -14,7 +14,7 @@ Some sample input files are provided along with the standalone version. They can
 
 Download [Java 1.6 or greater] (http://java.sun.com/javase/downloads/index.jsp).
 
-Download [Scoreboard Generator latest version](http://lucasdesenna.github.io/viral-campaign-scoreboard/download/scoreboard-generator-0.1.0-standalone.zip).
+Download [Scoreboard Generator latest version](http://lucasdesenna.github.io/scoreboard-generator/download/scoreboard-generator-0.1.0-standalone.zip).
 
 ## Usage
 ```
