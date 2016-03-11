@@ -9,12 +9,7 @@
   
   !IMPORTANT!: Invitation lists should be text files containing a single 
   '$inviter-id $invitee-id' pair per line. IDs must be integers."
-  ([]
+  []
       
-      (server/run)
-      (client/run))
-  
-  ([file]
-      
-      (server/run)
-      (client/run file)))
+  (server/run)
+  (client/run))
