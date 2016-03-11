@@ -1,6 +1,6 @@
 # Scoreboard Generator
 
-Parses a properly formatted invitation list file (.txt) into a customer scoreboard and exposes it through a HTTP ndpoit. Another HTTP endpoint allows for the addition of new invitations to a loaded list.
+Parses a properly formatted invitation list file (.txt) into a customer scoreboard and exposes it through an HTTP endpoit. Another HTTP endpoint allows for the addition of new invitations to a loaded list.
   
 #### Important
 
