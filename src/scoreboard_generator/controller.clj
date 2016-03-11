@@ -10,7 +10,7 @@
   
   (input-parser/parse-file file))
 
-(defn parse-scoreboard 
+(defn create-scoreboard 
   "Returns a scoreboard from a list of invitations."
   [invitations]
   
@@ -32,5 +32,6 @@
   (if-let [invitation (input-parser/parse-inviter-invitee (Integer. inviter) (Integer. invitee))]
     (let [concatenated-invitations (concat-invitations invitations invitation)]
       
-      (println "\n Invitation added: " invitation)
-      concatenated-invitations)))
+      (println "\nInvitation added: " invitation)
+      concatenated-invitations)
+    invitations))

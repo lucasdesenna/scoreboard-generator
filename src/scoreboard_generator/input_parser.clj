@@ -71,8 +71,9 @@
   (let [lines (extract-lines file)
         valid-lines (remove-invalid-lines lines)]
     
-    (when (not-empty valid-lines)
-      (parse-lines valid-lines))))
+    (if (not-empty valid-lines)
+      (parse-lines valid-lines)
+      (println "\nFile " file "contains no valid invitation."))))
 
 (defn parse-inviter-invitee 
   "Parses a inviter-invitee pair into a valid invitation."
@@ -81,5 +82,6 @@
   (let [line (str inviter " " invitee)
         valid-line (validate-line line 1)]
     
-    (when valid-line
-      (parse-lines (list valid-line)))))
+    (if valid-line
+      (parse-lines (list valid-line))
+      (println "\nInviter-invitee pair " line " is invalid."))))

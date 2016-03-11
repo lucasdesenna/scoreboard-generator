@@ -28,8 +28,7 @@
   (let [updated-session (assoc session :invitations updated-invitations-json
                                         :scoreboard updated-scoreboard-json)]
       
-      (println "\nInvitations added to session: " updated-invitations-json)
-      (println "\nScoreboard added to session: " updated-scoreboard-json)
+      (println "\nCurrent session was updated.")
       updated-session))
 
 (defn- parse-file 
@@ -39,7 +38,7 @@
   (let [inputFile (get-in request [:params "inputFile"])
         tempfile (:tempfile inputFile)
         invitations (controller/parse-file tempfile)
-        scoreboard (controller/parse-scoreboard invitations)
+        scoreboard (controller/create-scoreboard invitations)
         json-scoreboard (json/encode scoreboard)]
     
     (-> (resp/response json-scoreboard)
@@ -48,12 +47,12 @@
 (defn- parse-file-html 
   "Parses file into scoreboard, stores it in the current session and returns an html detailing the former."
   [request]
-
+  
   (let [inputFile (get-in request [:params "inputFile"])
         tempfile (:tempfile inputFile)
         session (get request :session)
         invitations (controller/parse-file tempfile)
-        scoreboard (controller/parse-scoreboard invitations)
+        scoreboard (controller/create-scoreboard invitations)
         updated-session (update-session session (json/encode invitations)
                                                 (json/encode scoreboard))
         results-page (page-builder/build-results-page invitations
@@ -73,7 +72,7 @@
         session (get request :session)
         current-invitations (json/decode current-invitations-json true)
         updated-invitations (controller/add-invitation current-invitations inviter invitee)
-        scoreboard (controller/parse-scoreboard updated-invitations)
+        scoreboard (controller/create-scoreboard updated-invitations)
         json-scoreboard (json/encode scoreboard)]        
    
    (-> (resp/response json-scoreboard)
@@ -89,7 +88,7 @@
         current-invitations-json (get session :invitations)
         current-invitations (json/decode current-invitations-json true)
         updated-invitations (controller/add-invitation current-invitations inviter invitee)
-        updated-scoreboard (controller/parse-scoreboard updated-invitations)
+        updated-scoreboard (controller/create-scoreboard updated-invitations)
         updated-session (update-session session (json/encode updated-invitations)
                                                 (json/encode updated-scoreboard))
         results-page (page-builder/build-results-page updated-invitations 
@@ -150,4 +149,3 @@
                                             wrap-params 
                                             wrap-multipart-params)
                                         {:port port})))))
-

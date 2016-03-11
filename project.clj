@@ -4,14 +4,14 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [cheshire "5.5.0"]
                  [org.flatland/ordered "1.5.3"]
                  [javax.servlet/servlet-api "2.5"]
                  [ring "1.4.0"]
-                 [liberator "0.13"]
                  [compojure "1.4.0"]
-                 [ring/ring-core "1.2.1"]
-                 [hiccup "1.0.5"]]
+                 [hiccup "1.0.5"]
+                 [cheshire "5.5.0"]]
   :main scoreboard-generator.core
   :target-path "target/%s"
-  :profiles {:uberjar {:aot [scoreboard-generator.core]}})
+  :profiles {:uberjar {:aot [scoreboard-generator.core]}
+             :dev {:resource-paths ["/test/test_inputs"]
+                   :dependencies [[clj-http "2.1.0"]]}})
