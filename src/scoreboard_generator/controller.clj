@@ -5,7 +5,7 @@
             [scoreboard-generator.scoreboard-factory :as scoreboard-factory]))
 
 (defn parse-file
-  "doc-string"
+  "Returns list of invitations from a properly formatted file."
   [file]
   
   (input-parser/parse-file file))

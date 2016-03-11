@@ -3,7 +3,7 @@
 (defrecord Invitation [^Integer inviter ^Integer invitee])
 
 (defn- extract-inviter-and-invitee
-  "Extracts inviter and invitee pair from a single line string."
+  "Extracts a inviter and invitee pair from a single line string."
   [^String line]
   (map #(Integer. %) (re-seq #"\d+" line)))
 

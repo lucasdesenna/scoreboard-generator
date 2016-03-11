@@ -12,13 +12,17 @@
       lines))
 
 (defn- line-valid? 
-  "Returns true if line contains two integers and is not a self-invitation. Returns false otherwise."
+  "Returns true if line contains two distinct positi integers. Returns false otherwise."
   [line]
   
-  (let [integers (re-seq #"\d+" line)]
+  (let [integers (re-seq #"\b\d+\b" line)
+        integer1 (first integers)
+        integer2 (second integers)]
     (if (and 
           (= (count integers) 2)
-          (not= (first integers) (second integers)))
+          (not= integer1 integer2)
+          (pos? (Integer. integer1))
+          (pos? (Integer. integer2)))
       true
       false)))
 

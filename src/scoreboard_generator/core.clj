@@ -5,11 +5,16 @@
   (:gen-class))
 
 (defn -main
-  "Parses a properly formatted invitation list file (.txt) into a customer scoreboard and exposes it through a HTTP endpoit. Another HTTP endpoint allows for the addition of new invitations to the loaded list.
+  "Parses a properly formatted invitation list file (.txt) into a customer scoreboard and exposes it through a HTTP endpoit. Another HTTP endpoint allows for the addition of new invitations to a loaded list.
   
   !IMPORTANT!: Invitation lists should be text files containing a single 
   '$inviter-id $invitee-id' pair per line. IDs must be integers."
-  []
-    
-    (server/run)
-    (client/run))
+  ([]
+      
+      (server/run)
+      (client/run))
+  
+  ([file]
+      
+      (server/run)
+      (client/run file)))
